@@ -1,0 +1,8 @@
+.talkComponent {
+    margin: 0 auto;
+    width: 150px;
+    border:2px solid palevioletred;
+    text-align: center;
+    padding: 5px;
+    margin-bottom: 10px;
+}

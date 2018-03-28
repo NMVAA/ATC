@@ -1,0 +1,8 @@
+.askComponent {
+    margin: 0 auto;
+    width: 150px;
+    border: 2px solid lightgreen;
+    text-align: center;
+    padding: 5px;
+    margin-bottom: 10px;
+}
