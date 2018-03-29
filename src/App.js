@@ -9,10 +9,15 @@ import "./App.css";
 class App extends Component {
   constructor(props){
     super(props);
-    this.state = {};
+    this.state = {
+      elemsCount: 0
+    };
   }
   drag = (e) => {
-      e.dataTransfer.setData("text/plain", e.target.id);
+      e.dataTransfer.setData("text/plain", e.target.id, this.state.elemsCount );
+      this.setState({
+        elemsCount: this.state.elemsCount
+      });
     }
   render() {
     return (
