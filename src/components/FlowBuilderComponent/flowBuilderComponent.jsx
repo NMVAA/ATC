@@ -87,7 +87,8 @@ class FlowBuilderComponent extends Component {
           onMouseOver={() => {
             this.setState({
               ...this.state, draggable: true
-            })
+            });
+            this.createCanvasElements()
           }
           }
 
@@ -104,6 +105,7 @@ class FlowBuilderComponent extends Component {
             this.setState({
               ...this.state, draggable: false
             })
+            this.createCanvasElements()
           }
           }
         />
