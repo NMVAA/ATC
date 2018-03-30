@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { Layer, Rect, Stage, Group } from 'react-konva';
+import { Text, Rect } from 'react-konva';
 import CanvasComponent from "../CanvasComponent/canvasComponent.jsx"
 import ReactResizeDetector from 'react-resize-detector';
 import "./flowBuilderComponent.css";
-import { Canvas } from 'konva';
 
 class FlowBuilderComponent extends Component {
   constructor() {
     super();
     this.state = {
       IsCanvas: false,
-      receivedData: []
+      receivedData: [],
+      createdElements: []
+
     }
   }
 
@@ -22,18 +23,60 @@ class FlowBuilderComponent extends Component {
   // Making data from dropped file 
   drop = (e) => {
     e.preventDefault();
-    let data = JSON.parse(e.dataTransfer.getData("objectData"));
+    console.log("x.pos: .", e.clientX, "y.pos: ", e.clientY)
+    let sideBarWidth = document.querySelector(".sideBarComponent").offsetWidth;
+    let data = e.dataTransfer.getData("objectData");
+    let receivedData = this.state.receivedData;
+    receivedData.push({
+      objectData: data,
+      cords: {
+        x: e.clientX,
+        y: e.clientY
+      }
+    })
     this.setState({
-      receivedData: this.state.receivedData.concat(data)
+      receivedData: receivedData
+    })
+    
+    this.createCanvasElements();
+  }
+
+  //On drag ends 
+  onDragEnd = (e) => {
+    let receivedData = this.state.receivedData;
+    console.log(receivedData[e.target.index  - 1]);
+    receivedData[e.target.index - 1].cords = { x: e.evt.x, y: e.evt.y };
+    this.setState({
+      receivedData: receivedData
+    })
+    console.log("cords in state", this.state.receivedData[0].cords);
+    console.log("created element in state", this.state.createdElements[0].props);
+    this.createCanvasElements()
+  }
+  // Create canvas elements from this.state.receivedData 
+  createCanvasElements = () => {
+    let canvasElements = this.state.receivedData.map((obj, i) => {
+      return <Rect
+        key={i}
+        x={obj.cords.x - 200}
+        y={obj.cords.y}
+        width={50}
+        height={50}
+        fill='black'
+        draggable={true}
+        onMouseUp={this.canvasElementClickHandler}
+        onDragEnd={this.onDragEnd}
+      />
+    });
+    this.setState({
+      createdElements: canvasElements
     })
 
-    console.log(this.state.receivedData)
   }
 
   // Resizing Canvas to the container size 
   resizeCanvas = () => {
     let con = document.querySelector(".flowBuilderComponent");
-    let canvas = document.querySelector("canvas");
     let width = con.offsetWidth;
     let height = con.offsetHeight;
     this.setState({
@@ -41,35 +84,14 @@ class FlowBuilderComponent extends Component {
       canvasHeight: height
     })
   }
-
-
   componentDidMount() {
-
     this.resizeCanvas();
-    // this.canvas = new p5(sketch);
-    // const CreateCanvas = () => {
-    //   return new Promise((resolve, reject) => {
-    //     this.canvas = new p5(sketch);
-    //     resolve("CanvasIsLoaded");
-    //   }).then(() => {
-    //     setTimeout(() => {
-    //       let canvasElement = document.querySelector("canvas");
-    //       let a = document.createAttribute("data-info");
-    //       a.value = "datainfo";
-    //       canvasElement.setAttributeNode(a);
-    //     }, 100)
-
-    //   })
-    // }
-    //CreateCanvas();
-
   }
   render() {
-
     return (
       <div className="flowBuilderComponent" onDrop={this.drop} onDragOver={this.allowDrop}>
-        <CanvasComponent width={this.state.canvasWidth} height={this.state.canvasHeight} />
-        <ReactResizeDetector handleWidth handleHeight onResize={this.resizeCanvas}/>
+        <CanvasComponent createdElements={this.state.createdElements} width={this.state.canvasWidth} height={this.state.canvasHeight} />
+        <ReactResizeDetector handleWidth handleHeight onResize={this.resizeCanvas} />
       </div>
     );
   }

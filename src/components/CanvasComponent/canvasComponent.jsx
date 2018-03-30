@@ -1,21 +1,22 @@
 import React from "react";
-import { Layer, Rect, Stage, Group } from 'react-konva';
-import Konva from "konva";
+import { Layer, Stage, Line } from 'react-konva';
 import "./canvasComponent.css";
 
 const CanvasComponent = (props) => {
-
-    return (
+    return [
         <Stage width={props.width} height={props.height} >
             <Layer>
-                <Rect
-                    x={props.width/2} y={props.height/2} width={50} height={50}
-                    fill={"black"}
-                    shadowBlur={10}
+                <Line
+                    points={[0, 0, 140, 23, 250, 60, 300, 20]}
+                    stroke='red'
+                    strokeWidth={2}
+                    lineCap='round'
+                    lineJoin='round'
                 />
+                {props.createdElements}
             </Layer>
         </Stage>
-    )
+    ]
 }
 
 export default CanvasComponent

@@ -15,15 +15,7 @@ class App extends Component {
     };
   }
   drag = (e) => {
-
-    let data = JSON.stringify({
-      objectType: e.target.id,
-      cords: {
-        x: 0,
-        y: 0
-      },
-    });
-    console.log(data)
+    let data =  e.target.id;
       e.dataTransfer.setData("objectData", data, this.state.elemsCount );
       this.setState({
         elemsCount: this.state.elemsCount
