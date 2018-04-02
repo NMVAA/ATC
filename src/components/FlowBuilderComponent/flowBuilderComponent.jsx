@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, Rect, Line, Label, Layer } from 'react-konva';
 import CanvasComponent from "../CanvasComponent/canvasComponent.jsx"
+import p5Component from "../p5Component/p5Component.js"
 import ReactResizeDetector from 'react-resize-detector';
 import "./flowBuilderComponent.css";
 
@@ -52,7 +53,7 @@ class FlowBuilderComponent extends Component {
     this.createCanvasElements()
   }
   // Set lines start position
-  setLinesStarPos = (e) => {
+  setLinesStartPos = (e) => {
     console.log("mouseDown")
     let receivedData = this.state.receivedData;
     receivedData[e.target.index - 1].connectedTo = {
@@ -65,7 +66,7 @@ class FlowBuilderComponent extends Component {
   }
   // Set Lines end position
   setLinesEndPos = (e) => {
-    console.log("mouseUP")
+    console.log(e)
   }
   // Create canvas elements from this.state.receivedData 
   createCanvasElements = () => {
@@ -134,7 +135,7 @@ class FlowBuilderComponent extends Component {
   render() {
     return (
       <div className="flowBuilderComponent" onDrop={this.drop} onDragOver={this.allowDrop}>
-        <CanvasComponent createdElements={this.state.createdElements} width={this.state.canvasWidth} height={this.state.canvasHeight} />
+        <CanvasComponent createdElements={this.state.createdElements} width={this.state.canvasWidth} height={this.state.canvasHeight} /> 
         <ReactResizeDetector handleWidth handleHeight onResize={this.resizeCanvas} />
       </div>
     );
