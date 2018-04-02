@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Text, Rect, Line, Label, Layer } from 'react-konva';
 import CanvasComponent from "../CanvasComponent/canvasComponent.jsx"
-import p5Component from "../p5Component/p5Component.js"
 import ReactResizeDetector from 'react-resize-detector';
 import "./flowBuilderComponent.css";
 
@@ -12,8 +11,7 @@ class FlowBuilderComponent extends Component {
       IsCanvas: false,
       receivedData: [],
       createdElements: [],
-      draggable: true
-
+      draggable: true,
     }
   }
 
@@ -33,8 +31,7 @@ class FlowBuilderComponent extends Component {
       cords: {
         x: e.clientX,
         y: e.clientY
-      },
-      connectedTo: {}
+      }
     })
     this.setState({
       receivedData: receivedData
@@ -54,20 +51,62 @@ class FlowBuilderComponent extends Component {
   }
   // Set lines start position
   setLinesStartPos = (e) => {
-    console.log("mouseDown")
+    console.log("mouseDown");
     let receivedData = this.state.receivedData;
     receivedData[e.target.index - 1].connectedTo = {
       ...receivedData[e.target.index - 1].connectedTo,
-      startPos: { x: e.target.attrs.x, y: e.target.attrs.y }
+      startPos: { x: e.evt.x - 200, y: e.evt.y },// need to calc correnct pos
+      
     }
     this.setState({
-      receivedData: receivedData
+      receivedData: receivedData,
+      startTargetIndex: e.target.index
     })
+
+    console.log(this.state.receivedData)
   }
   // Set Lines end position
   setLinesEndPos = (e) => {
-    console.log(e)
+    console.log("mouseUp");
+    let receivedData = this.state.receivedData;
+    receivedData[e.target.index - 1].connectedTo = {
+      ...receivedData[e.target.index - 1].connectedTo,
+      endPos: { x: e.evt.x - 200, y: e.evt.y },// need to calc correnct pos
+      
+    }
+    this.setState({
+      receivedData: receivedData,
+      endTargetIndex: e.target.index
+
+    })
+    this.drawConnection()
+    console.log(this.state.receivedData)
   }
+
+  //Draw conections
+  drawConnection= () => {
+    let connections = this.state.receivedData.map((obj, i) => {
+       if (obj.connectedTo){
+         console.log(obj.index)
+         return <Line
+         points = {[obj.connectedTo.startPos.x,
+                    obj.connectedTo.startPos.y,
+                    obj.connectedTo.endPos.x,
+                    obj.connectedTo.endPos.y
+                  ]}
+         stroke = "black"
+         strokeWidth = {1}
+         lineCap = 'round'
+         lineJoin = 'round'
+         />         
+
+    }
+      })
+      this.setState({
+        connections: connections
+      })
+      console.log(this.state.connections)
+    }
   // Create canvas elements from this.state.receivedData 
   createCanvasElements = () => {
     let canvasElements = this.state.receivedData.map((obj, i) => {
@@ -100,7 +139,7 @@ class FlowBuilderComponent extends Component {
           width={10}
           height={10}
           fill="black"
-          onMouseDown={this.setLinesStarPos}
+          onMouseDown={this.setLinesStartPos}
           onMouseUp={this.setLinesEndPos}
           onMouseOver={() => {
             this.setState({
@@ -135,7 +174,7 @@ class FlowBuilderComponent extends Component {
   render() {
     return (
       <div className="flowBuilderComponent" onDrop={this.drop} onDragOver={this.allowDrop}>
-        <CanvasComponent createdElements={this.state.createdElements} width={this.state.canvasWidth} height={this.state.canvasHeight} /> 
+        <CanvasComponent createdElements={this.state.createdElements} connections={this.state.connections} width={this.state.canvasWidth} height={this.state.canvasHeight} /> 
         <ReactResizeDetector handleWidth handleHeight onResize={this.resizeCanvas} />
       </div>
     );
