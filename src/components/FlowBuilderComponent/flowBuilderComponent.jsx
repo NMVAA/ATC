@@ -27,7 +27,7 @@ class FlowBuilderComponent extends Component {
     let data = e.dataTransfer.getData("objectData");
     let receivedData = this.state.receivedData;
     receivedData.push({
-      objectData: data,
+      cardType: data,
       cords: {
         x: e.clientX,
         y: e.clientY
@@ -58,28 +58,29 @@ class FlowBuilderComponent extends Component {
       startPos: { x: e.evt.x - 200, y: e.evt.y },// need to calc correnct pos
       
     }
+    receivedData[e.target.index - 1].startTargetIndex = e.target._id
     this.setState({
       receivedData: receivedData,
-      startTargetIndex: e.target.index
     })
 
     console.log(this.state.receivedData)
   }
   // Set Lines end position
   setLinesEndPos = (e) => {
-    console.log("mouseUp");
+    console.log(e.target._id);
     let receivedData = this.state.receivedData;
     receivedData[e.target.index - 1].connectedTo = {
       ...receivedData[e.target.index - 1].connectedTo,
       endPos: { x: e.evt.x - 200, y: e.evt.y },// need to calc correnct pos
       
     }
+    receivedData[e.target.index - 1].endTargetIndex = e.target._id
     this.setState({
       receivedData: receivedData,
       endTargetIndex: e.target.index
 
     })
-    this.drawConnection()
+    this.drawConnection();
     console.log(this.state.receivedData)
   }
 
@@ -88,7 +89,7 @@ class FlowBuilderComponent extends Component {
     let connections = this.state.receivedData.map((obj, i) => {
        if (obj.connectedTo){
          console.log(obj.index)
-         return <Line
+         return <Line key = {i}
          points = {[obj.connectedTo.startPos.x,
                     obj.connectedTo.startPos.y,
                     obj.connectedTo.endPos.x,
