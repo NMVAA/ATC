@@ -2,6 +2,7 @@ import React from "react";
 import { Layer, Stage, Line, Rect, Label, Animation, Path } from 'react-konva';
 import "./canvasComponent.css";
 import TalkBlock from "../talkBlock.jsx"
+import YodaImage from "../testImage.jsx"
 
 
 const CanvasComponent = (props) => {
