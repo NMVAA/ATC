@@ -24,6 +24,7 @@ I'm VacationBot and I'll help you find your perfect vacation`,
         };
     }
     componentDidMount(){
+      console.log(this.props)
         const imageTeleG = new window.Image();
         imageTeleG.src =  Telegram;
         imageTeleG.onload = () => {
@@ -63,7 +64,7 @@ I'm VacationBot and I'll help you find your perfect vacation`,
     }
     render(){
     return (
-        <Label x = {100} y = {20} draggable = {true}
+        <Label x = {this.props.x - 300/2} y = {this.props.y - 10} draggable = {true}
         > 
         <Rect
         shadowColor =  {"black"}

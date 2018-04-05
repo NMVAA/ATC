@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TalkComponent from "./components/TalkComponent/talkComponent.jsx"
 import SideBarComponent from "./components/SideBarComponent/sideBarComponent.jsx"
-import AskComponent from "./components/AskComponent/askComponent.jsx"
+import EventCatchSideBarComponent from "./components/EventBlock/EventCatchSideBarComponent/eventCatchSideBarComponent.jsx"
 import ActionComponent from "./components/ActionComponent/actionComponent.jsx"
 import FlowBuilderComponent from "./components/FlowBuilderComponent/flowBuilderComponent.jsx"
 
@@ -25,8 +25,8 @@ class App extends Component {
     return (
       <div className="App">
         <SideBarComponent>
+        <EventCatchSideBarComponent drag={this.drag}/>
         <TalkComponent drag={this.drag}/>
-        <AskComponent drag={this.drag}/>
         <ActionComponent drag={this.drag}/>
         </SideBarComponent>
         <FlowBuilderComponent/>

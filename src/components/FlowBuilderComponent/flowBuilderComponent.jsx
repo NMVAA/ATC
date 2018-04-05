@@ -3,6 +3,8 @@ import { Text, Rect, Line, Label, Layer } from 'react-konva';
 import CanvasComponent from "../CanvasComponent/canvasComponent.jsx"
 import ReactResizeDetector from 'react-resize-detector';
 import "./flowBuilderComponent.css";
+import TextBoxSmallComponent from "../TalkBlockComponents/TextBoxComponent/TextBoxSmallComponent.jsx"
+import EventCatchSmallComponent from "../EventBlock/EventCatchComponent/EventCatchSmallComponent.jsx"
 
 class FlowBuilderComponent extends Component {
   constructor() {
@@ -111,47 +113,59 @@ class FlowBuilderComponent extends Component {
   // Create canvas elements from this.state.receivedData 
   createCanvasElements = () => {
     let canvasElements = this.state.receivedData.map((obj, i) => {
-      return <Label
-        key={i}
-        draggable={this.state.draggable}
-        onDragEnd={this.onDragEnd}
-        x={obj.cords.x - 200}
-        y={obj.cords.y}
-      >
-        <Rect
-          x={0}
-          y={0}
-          width={50}
-          height={50}
-          stroke="black"
-          strokeWidth={1}
-          onMouseOver={() => {
-            this.setState({
-              ...this.state, draggable: true
-            });
-            this.createCanvasElements()
-          }
-          }
+      if (obj.cardType === "text"){
+        return <TextBoxSmallComponent
+        x={obj.cords.x - 200} 
+        y={obj.cords.y}/>
+      }
 
-        />
-        <Rect
-          x={20}
-          y={40}
-          width={10}
-          height={10}
-          fill="black"
-          onMouseDown={this.setLinesStartPos}
-          onMouseUp={this.setLinesEndPos}
-          onMouseOver={() => {
-            this.setState({
-              ...this.state, draggable: false
-            })
-            this.createCanvasElements()
-          }
-          }
-        />
+      if (obj.cardType === "catch"){
+        return <EventCatchSmallComponent
+        x={obj.cords.x - 200} 
+        y={obj.cords.y}/>
+      }
 
-      </Label>
+      // return <Label
+      //   key={i}
+      //   draggable={this.state.draggable}
+      //   onDragEnd={this.onDragEnd}
+      //   x={obj.cords.x - 200}
+      //   y={obj.cords.y}
+      // >
+      //   <Rect
+      //     x={0}
+      //     y={0}
+      //     width={50}
+      //     height={50}
+      //     stroke="black"
+      //     strokeWidth={1}
+      //     onMouseOver={() => {
+      //       this.setState({
+      //         ...this.state, draggable: true
+      //       });
+      //       this.createCanvasElements()
+      //     }
+      //     }
+
+      //   />
+      //   <Rect
+      //     x={20}
+      //     y={40}
+      //     width={10}
+      //     height={10}
+      //     fill="black"
+      //     onMouseDown={this.setLinesStartPos}
+      //     onMouseUp={this.setLinesEndPos}
+      //     onMouseOver={() => {
+      //       this.setState({
+      //         ...this.state, draggable: false
+      //       })
+      //       this.createCanvasElements()
+      //     }
+      //     }
+      //   />
+
+      // </Label>
     });
     this.setState({
       createdElements: canvasElements

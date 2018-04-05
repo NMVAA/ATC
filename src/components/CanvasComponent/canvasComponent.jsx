@@ -5,12 +5,11 @@ import TextBoxSmallComponent from "../TalkBlockComponents/TextBoxComponent/TextB
 import EventCatchSmallComponent from "../EventBlock/EventCatchComponent/EventCatchSmallComponent.jsx"
 
 const CanvasComponent = (props) => {
-    
+    // <TextBoxSmallComponent/>
     return [
         <Stage width={props.width} height={props.height} >
         <Layer>
-            <TextBoxSmallComponent/>
-            <EventCatchSmallComponent/>
+        <EventCatchSmallComponent x = {300} y = {100}/>
                 {props.createdElements}
                 {props.connections}
             </Layer>

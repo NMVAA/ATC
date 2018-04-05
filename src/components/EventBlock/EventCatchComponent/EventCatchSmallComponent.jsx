@@ -34,7 +34,12 @@ class EventCatchSmallComponent extends Component {
     }
     render(){
         return (
-            <Label className = {"eventCatchSmallComponent"} x = {25}  y = {25} draggable = {true}>
+            <Label id = {"id"} className = {"eventCatchSmallComponent"} x = {this.props.x  - 600/2/2}  y = {this.props.y - 10} draggable = {true}
+            onDragMove = { (e) => {
+                console.log(e.target.getClientRect())
+                console.log(e.target.id());
+            }} 
+            >
                 <Rect 
                 x = {0}
                 y = {0}

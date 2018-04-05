@@ -3,8 +3,8 @@ import "./talkComponent.css";
 
 const TalkComponent = (props) => {
   return (
-    <div id={"TalkComponent"} className="talkComponent" draggable="true" onDragStart={props.drag}>
-      <p>{`Talk`}</p>
+    <div id={"text"} className="talkComponent" draggable="true" onDragStart={props.drag}>
+      <p>{`Text`}</p>
     </div>
   );
 }
