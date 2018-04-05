@@ -34,11 +34,8 @@ class EventCatchSmallComponent extends Component {
     }
     render(){
         return (
-            <Label id = {"id"} className = {"eventCatchSmallComponent"} x = {this.props.x  - 600/2/2}  y = {this.props.y - 10} draggable = {true}
-            onDragMove = { (e) => {
-                console.log(e.target.getClientRect())
-                console.log(e.target.id());
-            }} 
+            <Label id = {"catch"} className = {"eventCatchSmallComponent"} x = {this.props.x - 700/2|| 200}  y = {this.props.y - 10 || 10} draggable = {true}
+            onDragEnd = { this.props.onDragEnd}
             >
                 <Rect 
                 x = {0}
@@ -91,6 +88,7 @@ class EventCatchSmallComponent extends Component {
                 align = {"center"}
                 />
                 <Circle className = {"talkBlock-quickReply-element-cntnCircle"}
+                onMouseDown={this.props.onMouseDown}
                 x = {600/2/2}
                 y = {74/2}
                 radius = {15/2}

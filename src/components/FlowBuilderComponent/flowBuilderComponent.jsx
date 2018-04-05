@@ -14,6 +14,7 @@ class FlowBuilderComponent extends Component {
       receivedData: [],
       createdElements: [],
       draggable: true,
+      lineCords: null
     }
   }
 
@@ -42,48 +43,52 @@ class FlowBuilderComponent extends Component {
     this.createCanvasElements();
   }
 
-  //On drag ends 
+  //On drag ends  DO I NEED THIS !?!?!
   onDragEnd = (e) => {
+    let objPosData = e.target.getClientRect();
     let receivedData = this.state.receivedData;
-    receivedData[e.target.index].cords = { x: e.evt.x, y: e.evt.y };
+    console.log(objPosData);
+    receivedData[e.target.index].cords = { x: objPosData.x, y: objPosData.y };
     this.setState({
       receivedData: receivedData
     })
-    this.createCanvasElements()
+    console.log(e.target.id() + e.target.index);
+  
   }
   // Set lines start position
   setLinesStartPos = (e) => {
     console.log("mouseDown");
-    let receivedData = this.state.receivedData;
-    receivedData[e.target.index - 1].connectedTo = {
-      ...receivedData[e.target.index - 1].connectedTo,
-      startPos: { x: e.evt.x - 200, y: e.evt.y },// need to calc correnct pos
+    console.log(e.target)
+    // let receivedData = this.state.receivedData;
+    // receivedData[e.target.index - 1].connectedTo = {
+    //   ...receivedData[e.target.index - 1].connectedTo,
+    //   startPos: { x: e.evt.x - 200, y: e.evt.y },// need to calc correnct pos
       
-    }
-    receivedData[e.target.index - 1].startTargetIndex = e.target._id
-    this.setState({
-      receivedData: receivedData,
-    })
+    // }
+    // receivedData[e.target.index - 1].startTargetIndex = e.target._id
+    // this.setState({
+    //   receivedData: receivedData,
+    // })
 
-    console.log(this.state.receivedData)
+    // console.log(this.state.receivedData)
   }
   // Set Lines end position
   setLinesEndPos = (e) => {
     console.log(e.target._id);
-    let receivedData = this.state.receivedData;
-    receivedData[e.target.index - 1].connectedTo = {
-      ...receivedData[e.target.index - 1].connectedTo,
-      endPos: { x: e.evt.x - 200, y: e.evt.y },// need to calc correnct pos
+    // let receivedData = this.state.receivedData;
+    // receivedData[e.target.index - 1].connectedTo = {
+    //   ...receivedData[e.target.index - 1].connectedTo,
+    //   endPos: { x: e.evt.x - 200, y: e.evt.y },// need to calc correnct pos
       
-    }
-    receivedData[e.target.index - 1].endTargetIndex = e.target._id
-    this.setState({
-      receivedData: receivedData,
-      endTargetIndex: e.target.index
+    // }
+    // receivedData[e.target.index - 1].endTargetIndex = e.target._id
+    // this.setState({
+    //   receivedData: receivedData,
+    //   endTargetIndex: e.target.index
 
-    })
-    this.drawConnection();
-    console.log(this.state.receivedData)
+    // })
+    // this.drawConnection();
+    // console.log(this.state.receivedData)
   }
 
   //Draw conections
@@ -115,14 +120,21 @@ class FlowBuilderComponent extends Component {
     let canvasElements = this.state.receivedData.map((obj, i) => {
       if (obj.cardType === "text"){
         return <TextBoxSmallComponent
-        x={obj.cords.x - 200} 
+        onDragEnd={this.onDragEnd}
+        onMouseDown={this.setLinesStartPos}
+        onMouseUp={this.setLinesEndPos}
+        x={obj.cords.x} 
         y={obj.cords.y}/>
       }
-
+      //fix first element render positioning
       if (obj.cardType === "catch"){
         return <EventCatchSmallComponent
-        x={obj.cords.x - 200} 
-        y={obj.cords.y}/>
+        onDragEnd = {this.onDragEnd}
+        onMouseDown={this.setLinesStartPos}
+        onMouseUp={this.setLinesEndPos}
+        x={obj.cords.x} 
+        y={obj.cords.y}
+        />
       }
 
       // return <Label
@@ -186,10 +198,16 @@ class FlowBuilderComponent extends Component {
   componentDidMount() {
     this.resizeCanvas();
   }
+  drawLine = (e) => {
+      console.log(e.evt.layerX, e.evt.layerY);
+      this.setState({
+        lineCords: [100,100,e.evt.layerX,e.evt.layerY]
+      })
+  }
   render() {
     return (
       <div className="flowBuilderComponent" onDrop={this.drop} onDragOver={this.allowDrop}>
-        <CanvasComponent createdElements={this.state.createdElements} connections={this.state.connections} width={this.state.canvasWidth} height={this.state.canvasHeight} /> 
+        <CanvasComponent lineCords = {this.state.lineCords} drawLine = {this.drawLine} createdElements={this.state.createdElements} connections={this.state.connections} width={this.state.canvasWidth} height={this.state.canvasHeight} /> 
         <ReactResizeDetector handleWidth handleHeight onResize={this.resizeCanvas} />
       </div>
     );

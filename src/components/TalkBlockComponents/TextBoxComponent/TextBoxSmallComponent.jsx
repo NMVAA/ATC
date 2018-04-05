@@ -64,7 +64,7 @@ I'm VacationBot and I'll help you find your perfect vacation`,
     }
     render(){
     return (
-        <Label x = {this.props.x - 300/2} y = {this.props.y - 10} draggable = {true}
+        <Label id = {"text"} x = {this.props.x - 700/2} y = {this.props.y - 10} draggable = {true}
         > 
         <Rect
         shadowColor =  {"black"}
@@ -179,6 +179,7 @@ I'm VacationBot and I'll help you find your perfect vacation`,
                     />
                 </Label>
         <Circle className = {"talkBlock-getStarted-cntnCircle"}
+        onMouseDown={this.props.onMouseDown}
         x ={540/2}
         y = {115/2/2}
         radius = {15/2}
@@ -203,6 +204,7 @@ I'm VacationBot and I'll help you find your perfect vacation`,
             fontSize = {20}
             />
             <Circle className = {"talkBlock-quickReply-element-cntnCircle"}
+            onMouseDown={this.props.onMouseDown}
             x = {540/2}
             y = {84/2/2}
             radius = {15/2}
@@ -226,6 +228,7 @@ I'm VacationBot and I'll help you find your perfect vacation`,
             fontSize = {20}
             />
             <Circle className = {"talkBlock-quickReply-element-cntnCircle"}
+            onMouseDown={this.props.onMouseDown}
             x = {540/2}
             y = {84/2/2}
             radius = {15/2}
@@ -253,6 +256,7 @@ I'm VacationBot and I'll help you find your perfect vacation`,
              fontSize = {20}
              />
              <Circle className = {"talkBlock-quickReply-element-cntnCircle"}
+             onMouseDown={this.props.onMouseDown}
              x = {600/2/2}
              y = {74/2}
              radius = {15/2}

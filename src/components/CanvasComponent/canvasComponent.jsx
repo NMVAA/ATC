@@ -3,13 +3,17 @@ import { Layer, Stage, Line, Rect, Label, Animation, Path } from 'react-konva';
 import "./canvasComponent.css";
 import TextBoxSmallComponent from "../TalkBlockComponents/TextBoxComponent/TextBoxSmallComponent.jsx"
 import EventCatchSmallComponent from "../EventBlock/EventCatchComponent/EventCatchSmallComponent.jsx"
+import LFM from "../testLine.jsx"
 
 const CanvasComponent = (props) => {
     // <TextBoxSmallComponent/>
+    console.log(props)
     return [
-        <Stage width={props.width} height={props.height} >
-        <Layer>
-        <EventCatchSmallComponent x = {300} y = {100}/>
+        <Stage
+         onMouseMove = {props.drawLine} 
+        width={props.width} height={props.height} >
+            <Layer >
+                <LFM lineCords = {props.lineCords} />
                 {props.createdElements}
                 {props.connections}
             </Layer>
