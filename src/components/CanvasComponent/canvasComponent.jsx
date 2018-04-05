@@ -1,14 +1,16 @@
 import React from "react";
 import { Layer, Stage, Line, Rect, Label, Animation, Path } from 'react-konva';
 import "./canvasComponent.css";
-import TalkBlock from "../talkBlock.jsx"
+import TextBoxSmallComponent from "../TalkBlockComponents/TextBoxComponent/TextBoxSmallComponent.jsx"
+import EventCatchSmallComponent from "../EventBlock/EventCatchComponent/EventCatchSmallComponent.jsx"
 
 const CanvasComponent = (props) => {
     
     return [
         <Stage width={props.width} height={props.height} >
-            <Layer>
-            <TalkBlock/>
+        <Layer>
+            <TextBoxSmallComponent/>
+            <EventCatchSmallComponent/>
                 {props.createdElements}
                 {props.connections}
             </Layer>

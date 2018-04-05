@@ -1,14 +1,14 @@
 import React, { Component } from "react"
 import { Shape, Group, Rect, Text, Circle, Image, Label} from "react-konva"
 import Konva from "konva"
-import TalkImage from "../img/talk.png"
-import Telegram from "../img/telegram.png"
-import Facebook from "../img/facebook.png"
-import Dices from "../img/dices.png"
-import Ear from "../img/ear.png"
+import TalkImage from "../../../img/talk.png"
+import Telegram from "../../../img/telegram.png"
+import Facebook from "../../../img/facebook.png"
+import Dices from "../../../img/dices.png"
+import Ear from "../../../img/ear.png"
 
 
-class TalkBlock extends Component {
+class TextBoxSmallComponent extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -24,12 +24,9 @@ I'm VacationBot and I'll help you find your perfect vacation`,
         };
     }
     componentDidMount(){
-        // Make a loop
         const imageTeleG = new window.Image();
         imageTeleG.src =  Telegram;
         imageTeleG.onload = () => {
-          // setState will redraw layer
-          // because "image" property is changed
           this.setState({
             imageTeleG: imageTeleG
           });
@@ -37,8 +34,6 @@ I'm VacationBot and I'll help you find your perfect vacation`,
         const imagefaceB = new window.Image();
         imagefaceB.src =  Facebook;
         imagefaceB.onload = () => {
-          // setState will redraw layer
-          // because "image" property is changed
           this.setState({
             imagefaceB: imagefaceB
           });
@@ -46,8 +41,6 @@ I'm VacationBot and I'll help you find your perfect vacation`,
         const imageTitle = new window.Image();
         imageTitle.src =  TalkImage;
         imageTitle.onload = () => {
-          // setState will redraw layer
-          // because "image" property is changed
           this.setState({
             imageTitle: imageTitle
           });
@@ -55,8 +48,7 @@ I'm VacationBot and I'll help you find your perfect vacation`,
         const imageDices = new window.Image();
         imageDices.src =  Dices;
         imageDices.onload = () => {
-          // setState will redraw layer
-          // because "image" property is changed
+
           this.setState({
             imageDices: imageDices
           });
@@ -64,8 +56,6 @@ I'm VacationBot and I'll help you find your perfect vacation`,
         const imageEar = new window.Image();
         imageEar.src =  Ear;
         imageEar.onload = () => {
-          // setState will redraw layer
-          // because "image" property is changed
           this.setState({
             imageEar: imageEar
           });
@@ -73,7 +63,7 @@ I'm VacationBot and I'll help you find your perfect vacation`,
     }
     render(){
     return (
-        <Label x = {100} y = {20} draggable = {false}
+        <Label x = {100} y = {20} draggable = {true}
         > 
         <Rect
         shadowColor =  {"black"}
@@ -275,4 +265,4 @@ I'm VacationBot and I'll help you find your perfect vacation`,
 }
   }   
 
-  export default  TalkBlock
+  export default  TextBoxSmallComponent
