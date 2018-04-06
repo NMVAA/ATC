@@ -11,10 +11,14 @@ class FlowBuilderComponent extends Component {
     super();
     this.state = {
       IsCanvas: false,
-      receivedData: [],
+      elementsCount: 0,
+      receivedData: {},
       createdElements: [],
       draggable: true,
-      lineCords: null
+      lineCords: null,
+      isLineDrawing: false,
+      isDraggable: true,
+      scale: .75
     }
   }
 
@@ -26,16 +30,20 @@ class FlowBuilderComponent extends Component {
   // Making data from dropped file 
   drop = (e) => {
     e.preventDefault();
+    this.setState({
+      elemestsCount: this.state.elementsCount++
+    })
     let sideBarWidth = document.querySelector(".sideBarComponent").offsetWidth;
     let data = e.dataTransfer.getData("objectData");
+    let id = data + this.state.elementsCount;
     let receivedData = this.state.receivedData;
-    receivedData.push({
+    receivedData[id] = {
       cardType: data,
       cords: {
-        x: e.clientX,
-        y: e.clientY
+        x: e.clientX - 700 * (this.state.scale/2),
+        y: e.clientY - 20
       }
-    })
+    };
     this.setState({
       receivedData: receivedData
     })
@@ -45,50 +53,26 @@ class FlowBuilderComponent extends Component {
 
   //On drag ends  DO I NEED THIS !?!?!
   onDragEnd = (e) => {
-    let objPosData = e.target.getClientRect();
+    let {x,y} = e.target.getClientRect();
     let receivedData = this.state.receivedData;
-    console.log(objPosData);
-    receivedData[e.target.index].cords = { x: objPosData.x, y: objPosData.y };
+    receivedData[e.target.attrs.name].cords = { x: x, y: y };
     this.setState({
       receivedData: receivedData
     })
-    console.log(e.target.id() + e.target.index);
+    this.createCanvasElements();
   
   }
   // Set lines start position
   setLinesStartPos = (e) => {
     console.log("mouseDown");
     console.log(e.target)
-    // let receivedData = this.state.receivedData;
-    // receivedData[e.target.index - 1].connectedTo = {
-    //   ...receivedData[e.target.index - 1].connectedTo,
-    //   startPos: { x: e.evt.x - 200, y: e.evt.y },// need to calc correnct pos
-      
-    // }
-    // receivedData[e.target.index - 1].startTargetIndex = e.target._id
-    // this.setState({
-    //   receivedData: receivedData,
-    // })
-
-    // console.log(this.state.receivedData)
   }
   // Set Lines end position
   setLinesEndPos = (e) => {
-    console.log(e.target._id);
-    // let receivedData = this.state.receivedData;
-    // receivedData[e.target.index - 1].connectedTo = {
-    //   ...receivedData[e.target.index - 1].connectedTo,
-    //   endPos: { x: e.evt.x - 200, y: e.evt.y },// need to calc correnct pos
-      
-    // }
-    // receivedData[e.target.index - 1].endTargetIndex = e.target._id
-    // this.setState({
-    //   receivedData: receivedData,
-    //   endTargetIndex: e.target.index
-
-    // })
-    // this.drawConnection();
-    // console.log(this.state.receivedData)
+    
+    if (this.state.isLineDrawing && this.state.lineCords){
+      console.log(e.target.attrs.name)
+    }
   }
 
   //Draw conections
@@ -115,74 +99,46 @@ class FlowBuilderComponent extends Component {
       })
       console.log(this.state.connections)
     }
+
+    activateDraggability = (e) => {
+      console.log(e.target.draggable)
+    }
   // Create canvas elements from this.state.receivedData 
   createCanvasElements = () => {
-    let canvasElements = this.state.receivedData.map((obj, i) => {
-      if (obj.cardType === "text"){
-        return <TextBoxSmallComponent
-        onDragEnd={this.onDragEnd}
-        onMouseDown={this.setLinesStartPos}
-        onMouseUp={this.setLinesEndPos}
-        x={obj.cords.x} 
-        y={obj.cords.y}/>
-      }
-      //fix first element render positioning
-      if (obj.cardType === "catch"){
-        return <EventCatchSmallComponent
-        onDragEnd = {this.onDragEnd}
-        onMouseDown={this.setLinesStartPos}
-        onMouseUp={this.setLinesEndPos}
-        x={obj.cords.x} 
-        y={obj.cords.y}
-        />
-      }
-
-      // return <Label
-      //   key={i}
-      //   draggable={this.state.draggable}
-      //   onDragEnd={this.onDragEnd}
-      //   x={obj.cords.x - 200}
-      //   y={obj.cords.y}
-      // >
-      //   <Rect
-      //     x={0}
-      //     y={0}
-      //     width={50}
-      //     height={50}
-      //     stroke="black"
-      //     strokeWidth={1}
-      //     onMouseOver={() => {
-      //       this.setState({
-      //         ...this.state, draggable: true
-      //       });
-      //       this.createCanvasElements()
-      //     }
-      //     }
-
-      //   />
-      //   <Rect
-      //     x={20}
-      //     y={40}
-      //     width={10}
-      //     height={10}
-      //     fill="black"
-      //     onMouseDown={this.setLinesStartPos}
-      //     onMouseUp={this.setLinesEndPos}
-      //     onMouseOver={() => {
-      //       this.setState({
-      //         ...this.state, draggable: false
-      //       })
-      //       this.createCanvasElements()
-      //     }
-      //     }
-      //   />
-
-      // </Label>
-    });
+    let createdElements = [];
+    for (let obj in this.state.receivedData){
+        if (this.state.receivedData[obj].cardType === "text"){
+            createdElements.push(<TextBoxSmallComponent
+            onDragEnd = {this.onDragEnd}
+            onMouseDown = {this.setLinesStartPos}
+            onMouseUp = {this.setLinesEndPos}
+            isDraggable = {this.state.isDraggable}
+            activateDraggability = {this.activateDraggability}
+            key = {obj + this.state.elementsCount}
+            id = {obj}
+            scale = {this.state.scale}
+            x={this.state.receivedData[obj].cords.x} 
+            y={this.state.receivedData[obj].cords.y}/>
+            )
+          }
+          //fix first element render positioning
+          if (this.state.receivedData[obj].cardType === "catch"){
+              createdElements.push(<EventCatchSmallComponent
+              onDragEnd = {this.onDragEnd}
+              onMouseDown={this.setLinesStartPos}
+              onMouseUp={this.setLinesEndPos}
+              isDraggable = {this.state.isDraggable}
+              key = {obj + this.state.elementsCount}
+              id = {obj}
+              scale = {this.state.scale}
+              x={this.state.receivedData[obj].cords.x} 
+              y={this.state.receivedData[obj].cords.y}
+              />)
+            }
+        }
     this.setState({
-      createdElements: canvasElements
+      createdElements: createdElements
     })
-
   }
 
   // Resizing Canvas to the container size
@@ -199,15 +155,23 @@ class FlowBuilderComponent extends Component {
     this.resizeCanvas();
   }
   drawLine = (e) => {
-      console.log(e.evt.layerX, e.evt.layerY);
+      // console.log(e.evt.layerX, e.evt.layerY);
+      if (this.state.isLineDrawing){
       this.setState({
         lineCords: [100,100,e.evt.layerX,e.evt.layerY]
       })
+    }
   }
   render() {
     return (
       <div className="flowBuilderComponent" onDrop={this.drop} onDragOver={this.allowDrop}>
-        <CanvasComponent lineCords = {this.state.lineCords} drawLine = {this.drawLine} createdElements={this.state.createdElements} connections={this.state.connections} width={this.state.canvasWidth} height={this.state.canvasHeight} /> 
+        <CanvasComponent
+          lineCords = {this.state.lineCords}
+          drawLine = {this.drawLine}
+          createdElements={this.state.createdElements}
+          connections={this.state.connections}
+          width={this.state.canvasWidth}
+          height={this.state.canvasHeight} /> 
         <ReactResizeDetector handleWidth handleHeight onResize={this.resizeCanvas} />
       </div>
     );

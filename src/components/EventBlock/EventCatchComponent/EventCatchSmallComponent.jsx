@@ -34,14 +34,21 @@ class EventCatchSmallComponent extends Component {
     }
     render(){
         return (
-            <Label id = {"catch"} className = {"eventCatchSmallComponent"} x = {this.props.x - 700/2|| 200}  y = {this.props.y - 10 || 10} draggable = {true}
-            onDragEnd = { this.props.onDragEnd}
+            <Label name = {this.props.id}
+                className = {"eventCatchSmallComponent"}
+                x = {this.props.x || 200}
+                y = {this.props.y || 10}
+                draggable = {true}
+                onDragEnd = { this.props.onDragEnd}
+                onMouseUp = {this.props.onMouseUp}
+                onMouseDown = {this.props.activateDraggability}
+                onMouseDown ={this.props.onMouseDown}
             >
                 <Rect 
                 x = {0}
                 y = {0}
-                width = {600/2}
-                height = {300/2}
+                width = {600* (this.props.scale/2)}
+                height = {300* (this.props.scale/2)}
                 fill = {"#99cc67"}
                 stroke = {"#999999"}
                 strokeWidth = {1.5}
@@ -50,30 +57,30 @@ class EventCatchSmallComponent extends Component {
 
                 <Image 
                 image={this.state.imageCatchEvt}
-                x = {14/2}
-                y = {12/2}
-                width = {58/2}
-                height = {58/2}
+                x = {14* (this.props.scale/2)}
+                y = {12* (this.props.scale/2)}
+                width = {58* (this.props.scale/2)}
+                height = {58* (this.props.scale/2)}
                 />
                 <Text
-                x = {112/2} 
-                y = {26/2}
+                x = {112* (this.props.scale/2)} 
+                y = {26* (this.props.scale/2)}
                 text = {"Catch event"}
-                fontSize = {18}
+                fontSize = {36* (this.props.scale/2)}
 
                 />
                 <Text
-                x = {74/2} 
-                y = {100/2}
-                width = {400/2} 
+                x = {74* (this.props.scale/2)} 
+                y = {100* (this.props.scale/2)}
+                width = {400* (this.props.scale/2)} 
                 text = {"TRIGGER SEQUENCE-> {$value}, {$key}"}
-                fontSize = {18}
+                fontSize = {36* (this.props.scale/2)}
                 />
                 <Label className = {"eventCatchSmallComponent-button"}  x = {0}
-                y = {230/2}  >
+                y = {230* (this.props.scale/2)}  >
                 <Rect 
-                width = {600/2}
-                height = {70/2}
+                width = {600* (this.props.scale/2)}
+                height = {70* (this.props.scale/2)}
                 fill = {"white"}
                 stroke = {"#999999"}
                 strokeWidth = {1.5}
@@ -81,17 +88,17 @@ class EventCatchSmallComponent extends Component {
                 />
                 <Text
                 x = {0}
-                y = {70/2/2/2} 
-                width = {600/2} 
+                y = {70* (this.props.scale/2)* (this.props.scale/2)* (this.props.scale/2)} 
+                width = {600* (this.props.scale/2)} 
                 text = {"OK"}
-                fontSize = {18}
+                fontSize = {36* (this.props.scale/2)}
                 align = {"center"}
                 />
                 <Circle className = {"talkBlock-quickReply-element-cntnCircle"}
-                onMouseDown={this.props.onMouseDown}
-                x = {600/2/2}
-                y = {74/2}
-                radius = {15/2}
+                // onMouseDown={this.props.onMouseDown}
+                x = {600* (this.props.scale/2) / 2}
+                y = {74* (this.props.scale/2)}
+                radius = {15* (this.props.scale/2)}
                 fill = {"#8cc63f"}
                 stroke = {"#999999"}
                 strokeWidth = {1.5} 

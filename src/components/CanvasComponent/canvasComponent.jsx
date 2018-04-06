@@ -7,14 +7,14 @@ import LFM from "../testLine.jsx"
 
 const CanvasComponent = (props) => {
     // <TextBoxSmallComponent/>
-    console.log(props)
+    // {props.createdElements}
+    let elems = props.createdElements.map(elem => elem)
     return [
         <Stage
-         onMouseMove = {props.drawLine} 
+        onMouseMove = {props.drawLine} 
         width={props.width} height={props.height} >
-            <Layer >
-                <LFM lineCords = {props.lineCords} />
-                {props.createdElements}
+        <Layer >
+        {elems}
                 {props.connections}
             </Layer>
         </Stage>
