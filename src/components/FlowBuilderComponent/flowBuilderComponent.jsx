@@ -18,7 +18,7 @@ class FlowBuilderComponent extends Component {
       lineCords: null,
       isLineDrawing: false,
       isDraggable: true,
-      scale: .75
+      scale: 0.75 || 0.4
     }
   }
 
@@ -141,6 +141,21 @@ class FlowBuilderComponent extends Component {
     })
   }
 
+  // CanvasZoom 
+  canvasZoom = (e) => {
+    if (e.evt.altKey && this.state.scale > 0.4){
+      console.log(-e.evt.deltaY/1000);
+      this.setState({
+        scale: this.state.scale + (-e.evt.deltaY/1000)
+      })
+      console.log(this.state.scale)
+      this.createCanvasElements()
+    } else {
+      this.setState({
+        scale: 0.41
+      })
+    }
+  }
   // Resizing Canvas to the container size
   resizeCanvas = () => {
     let con = document.querySelector(".flowBuilderComponent");
@@ -164,8 +179,11 @@ class FlowBuilderComponent extends Component {
   }
   render() {
     return (
-      <div className="flowBuilderComponent" onDrop={this.drop} onDragOver={this.allowDrop}>
+      <div className="flowBuilderComponent" onDrop={this.drop} onDragOver={this.allowDrop} onKeyPress={() => {
+        console.log("key")
+      }}>
         <CanvasComponent
+          canvasZoom = {this.canvasZoom}
           lineCords = {this.state.lineCords}
           drawLine = {this.drawLine}
           createdElements={this.state.createdElements}

@@ -10,7 +10,7 @@ const CanvasComponent = (props) => {
     // {props.createdElements}
     let elems = props.createdElements.map(elem => elem)
     return [
-        <Stage
+        <Stage onWheel = {props.canvasZoom}
         onMouseMove = {props.drawLine} 
         width={props.width} height={props.height} >
         <Layer >

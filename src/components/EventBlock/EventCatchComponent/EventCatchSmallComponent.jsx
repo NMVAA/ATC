@@ -88,7 +88,7 @@ class EventCatchSmallComponent extends Component {
                 />
                 <Text
                 x = {0}
-                y = {70* (this.props.scale/2)* (this.props.scale/2)* (this.props.scale/2)} 
+                y = {20* (this.props.scale/2)} 
                 width = {600* (this.props.scale/2)} 
                 text = {"OK"}
                 fontSize = {36* (this.props.scale/2)}
