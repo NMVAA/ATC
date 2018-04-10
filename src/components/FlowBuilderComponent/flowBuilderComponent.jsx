@@ -14,10 +14,11 @@ class FlowBuilderComponent extends Component {
       elementsCount: 0,
       receivedData: {},
       createdElements: [],
-      draggable: false,
+      draggable: true,
       lineCords: null,
-      isDraggable: false,
-      scale: 0.75 || 0.4
+      isDraggable: true,
+      scale: 0.75 || 0.4,
+      scaleStage: 1
     }
     this.isLineDrawing = false;
     this.linesStartElement =  "";
@@ -44,7 +45,7 @@ class FlowBuilderComponent extends Component {
         x: e.clientX - 700 * (this.state.scale/2),
         y: e.clientY - 20
       },
-      connectedTo: {}
+      connectedTo: []
     };
     this.setState({
       receivedData: receivedData
@@ -88,7 +89,7 @@ class FlowBuilderComponent extends Component {
     this.setState({
       receivedData: receivedData
     })
-    this.drawConnection()
+    // this.drawConnection()
     console.log(this.state.receivedData[e.target.attrs.name])
   }
   // Set Lines end position
@@ -101,7 +102,7 @@ class FlowBuilderComponent extends Component {
         x: e.evt.layerX,
         y: e.evt.layerY
       }
-      this.drawConnection()
+      // this.drawConnection()
     }
 
 
@@ -148,22 +149,22 @@ class FlowBuilderComponent extends Component {
             key = {obj + this.state.elementsCount}
             id = {obj}
             scale = {this.state.scale}
-            x={this.state.receivedData[obj].cords.x} 
-            y={this.state.receivedData[obj].cords.y}/>
+            x = {this.state.receivedData[obj].cords.x} 
+            y = {this.state.receivedData[obj].cords.y}/>
             )
           }
           //fix first element render positioning
           if (this.state.receivedData[obj].cardType === "catch"){
               createdElements.push(<EventCatchSmallComponent
               onDragEnd = {this.onDragEnd}
-              onMouseDown={this.setLinesStartPos}
-              onMouseUp={this.setLinesEndPos}
+              onMouseDown = {this.setLinesStartPos}
+              onMouseUp = {this.setLinesEndPos}
               isDraggable = {this.state.isDraggable}
               key = {obj + this.state.elementsCount}
               id = {obj}
               scale = {this.state.scale}
-              x={this.state.receivedData[obj].cords.x} 
-              y={this.state.receivedData[obj].cords.y}
+              x = {this.state.receivedData[obj].cords.x} 
+              y = {this.state.receivedData[obj].cords.y}
               />)
             }
         }
@@ -174,25 +175,23 @@ class FlowBuilderComponent extends Component {
 
   // CanvasZoom 
   canvasZoom = (e) => {
-    if (e.evt.altKey && this.state.scale > 0.4){
-      console.log(-e.evt.deltaY/1000);
-      this.setState({
-        scale: this.state.scale + (-e.evt.deltaY/1000)
-      })
-      console.log(this.state.scale)
+    if (e.evt.altKey && this.state.scaleStage > 0.4){
+      let receivedData = this.state.receivedData;
+        this.setState({
+          scaleStage: this.state.scaleStage + (-e.evt.deltaY/1000)
+        })
       this.createCanvasElements()
     } 
-    if (this.state.scale < 0.4) {
+    if (this.state.scaleStage < 0.4) {
       this.setState({
-        scale: 0.41
+        scaleStage: 0.41
       })
     }
-    if (this.state.scale > 2.1) {
+    if (this.state.scaleStage > 2.1) {
       this.setState({
-        scale: 2
+        scaleStage: 2
       })
     }
-    this.drawConnection()
   }
   // Resizing Canvas to the container size
   resizeCanvas = () => {
@@ -215,7 +214,7 @@ class FlowBuilderComponent extends Component {
         x: e.evt.layerX,
         y: e.evt.layerY
       }
-      this.drawConnection();
+      // this.drawConnection();
       this.setState({
         receivedData: receivedData
       })
@@ -227,20 +226,20 @@ class FlowBuilderComponent extends Component {
         console.log("key")
       }}>
         <CanvasComponent
+          scaleStage ={this.state.scaleStage}
+          stageZoom = {this.state.stageZoom}
           onMouseUp = {this.setLinesEndPos}
           canvasZoom = {this.canvasZoom}
           lineCords = {this.state.lineCords}
           drawLine = {this.drawLine}
-          createdElements={this.state.createdElements}
-          connections={this.state.connections}
-          width={this.state.canvasWidth}
-          height={this.state.canvasHeight} /> 
-        <ReactResizeDetector handleWidth handleHeight onResize={this.resizeCanvas} />
+          createdElements = {this.state.createdElements}
+          connections = {this.state.connections}
+          width = {this.state.canvasWidth}
+          height = {this.state.canvasHeight} /> 
+        <ReactResizeDetector handleWidth handleHeight onResize = {this.resizeCanvas} />
       </div>
     );
   }
 }
 
 export default FlowBuilderComponent
-
-

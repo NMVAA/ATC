@@ -11,6 +11,7 @@ const CanvasComponent = (props) => {
     let elems = props.createdElements.map(elem => elem)
     return [
         <Stage
+        scale = {{ x: props.scaleStage, y: props.scaleStage }}
         onMouseUp = {props.onMouseUp}
         onWheel = {props.canvasZoom}
         onMouseMove = {props.drawLine} 
