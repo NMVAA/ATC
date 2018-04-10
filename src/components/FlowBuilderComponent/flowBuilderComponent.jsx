@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, Rect, Line, Label, Layer } from 'react-konva';
+import { Text, Rect, Line, Label, Layer, Arrow} from 'react-konva';
 import CanvasComponent from "../CanvasComponent/canvasComponent.jsx"
 import ReactResizeDetector from 'react-resize-detector';
 import "./flowBuilderComponent.css";
@@ -14,12 +14,13 @@ class FlowBuilderComponent extends Component {
       elementsCount: 0,
       receivedData: {},
       createdElements: [],
-      draggable: true,
+      draggable: false,
       lineCords: null,
-      isLineDrawing: false,
-      isDraggable: true,
+      isDraggable: false,
       scale: 0.75 || 0.4
     }
+    this.isLineDrawing = false;
+    this.linesStartElement =  "";
   }
 
   // Allow drop draggable object to this element 
@@ -42,7 +43,8 @@ class FlowBuilderComponent extends Component {
       cords: {
         x: e.clientX - 700 * (this.state.scale/2),
         y: e.clientY - 20
-      }
+      },
+      connectedTo: {}
     };
     this.setState({
       receivedData: receivedData
@@ -54,8 +56,10 @@ class FlowBuilderComponent extends Component {
   //On drag ends  DO I NEED THIS !?!?!
   onDragEnd = (e) => {
     let {x,y} = e.target.getClientRect();
+    let {width,height} = e.target.getClientRect();
     let receivedData = this.state.receivedData;
     receivedData[e.target.attrs.name].cords = { x: x, y: y };
+    receivedData[e.target.attrs.name].size = { width: width, height: height };
     this.setState({
       receivedData: receivedData
     })
@@ -64,36 +68,63 @@ class FlowBuilderComponent extends Component {
   }
   // Set lines start position
   setLinesStartPos = (e) => {
-    console.log("mouseDown");
-    console.log(e.target)
+    this.linesStartElement = e.target.attrs.name
+    this.isLineDrawing = true
+    this.createCanvasElements();
+    let receivedData = this.state.receivedData;
+    if (!this.state.receivedData[e.target.attrs.name].size){
+      receivedData[e.target.attrs.name].connectedTo.startPos = {x: e.evt.layerX, y: e.evt.layerY};
+      receivedData[e.target.attrs.name].connectedTo.endPos = {x: e.evt.layerX, y: e.evt.layerY}
+    } else {
+      receivedData[e.target.attrs.name].connectedTo.startPos = {
+        x: this.state.receivedData[e.target.attrs.name].cords.x + (this.state.receivedData[e.target.attrs.name].size.width /2) ,
+        y: this.state.receivedData[e.target.attrs.name].cords.y + (this.state.receivedData[e.target.attrs.name].size.height)
+      }
+      // receivedData[e.target.attrs.name].connectedTo.endPos = {
+      //   x: e.evt.layerX,
+      //   y: e.evt.layerY
+      // }
+    }
+    this.setState({
+      receivedData: receivedData
+    })
+    this.drawConnection()
+    console.log(this.state.receivedData[e.target.attrs.name])
   }
   // Set Lines end position
   setLinesEndPos = (e) => {
-    
-    if (this.state.isLineDrawing && this.state.lineCords){
-      console.log(e.target.attrs.name)
+    let receivedData = this.state.receivedData;
+    console.log(e.evt.layerY)
+    this.isLineDrawing = false;
+    if (e.target.nodeType === "stage"){
+      receivedData[this.linesStartElement].connectedTo.endPos = {
+        x: e.evt.layerX,
+        y: e.evt.layerY
+      }
+      this.drawConnection()
     }
+
+
   }
 
   //Draw conections
   drawConnection= () => {
-    let connections = this.state.receivedData.map((obj, i) => {
-       if (obj.connectedTo){
-         console.log(obj.index)
-         return <Line key = {i}
-         points = {[obj.connectedTo.startPos.x,
-                    obj.connectedTo.startPos.y,
-                    obj.connectedTo.endPos.x,
-                    obj.connectedTo.endPos.y
+    let connections = [];
+      for (let obj in this.state.receivedData){
+        console.log(obj)
+         connections.push(<Arrow key = {obj + this.state.elementsCount + "line"}
+         points = {[this.state.receivedData[obj].connectedTo.startPos.x,
+                    this.state.receivedData[obj].connectedTo.startPos.y,
+                    this.state.receivedData[obj].connectedTo.endPos.x,
+                    this.state.receivedData[obj].connectedTo.endPos.y
                   ]}
-         stroke = "black"
-         strokeWidth = {1}
+         stroke = "#999999"
+         fill = "#999999"
+         strokeWidth = {1.5}
          lineCap = 'round'
          lineJoin = 'round'
-         />         
-
-    }
-      })
+         />)
+        }
       this.setState({
         connections: connections
       })
@@ -150,11 +181,18 @@ class FlowBuilderComponent extends Component {
       })
       console.log(this.state.scale)
       this.createCanvasElements()
-    } else {
+    } 
+    if (this.state.scale < 0.4) {
       this.setState({
         scale: 0.41
       })
     }
+    if (this.state.scale > 2.1) {
+      this.setState({
+        scale: 2
+      })
+    }
+    this.drawConnection()
   }
   // Resizing Canvas to the container size
   resizeCanvas = () => {
@@ -170,10 +208,16 @@ class FlowBuilderComponent extends Component {
     this.resizeCanvas();
   }
   drawLine = (e) => {
-      // console.log(e.evt.layerX, e.evt.layerY);
-      if (this.state.isLineDrawing){
+    if (this.isLineDrawing){
+      console.log(e.evt.layerX, e.evt.layerY);
+      let receivedData = this.state.receivedData;
+      receivedData[this.linesStartElement].connectedTo.endPos = {
+        x: e.evt.layerX,
+        y: e.evt.layerY
+      }
+      this.drawConnection();
       this.setState({
-        lineCords: [100,100,e.evt.layerX,e.evt.layerY]
+        receivedData: receivedData
       })
     }
   }
@@ -183,6 +227,7 @@ class FlowBuilderComponent extends Component {
         console.log("key")
       }}>
         <CanvasComponent
+          onMouseUp = {this.setLinesEndPos}
           canvasZoom = {this.canvasZoom}
           lineCords = {this.state.lineCords}
           drawLine = {this.drawLine}
