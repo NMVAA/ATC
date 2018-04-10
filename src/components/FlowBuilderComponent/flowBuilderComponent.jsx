@@ -17,7 +17,7 @@ class FlowBuilderComponent extends Component {
       draggable: true,
       lineCords: null,
       isDraggable: true,
-      scale: 0.75 || 0.4,
+      scale: 2.5 || 0.4,
       scaleStage: 1
     }
     this.isLineDrawing = false;
@@ -42,7 +42,7 @@ class FlowBuilderComponent extends Component {
     receivedData[id] = {
       cardType: data,
       cords: {
-        x: e.clientX - 700 * (this.state.scale/2),
+        x: e.clientX - 700 / 2,
         y: e.clientY - 20
       },
       connectedTo: []
