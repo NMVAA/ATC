@@ -16,7 +16,7 @@ class FlowBuilderComponent extends Component {
       createdElements: [],
       draggable: true,
       lineCords: null,
-      isDraggable: true,
+      isDraggable: false,
       scale: 2.5 || 0.4,
       scaleStage: 1
     }
@@ -92,15 +92,15 @@ class FlowBuilderComponent extends Component {
         x: this.state.receivedData[e.target.attrs.name].cords.x + (this.state.receivedData[e.target.attrs.name].size.width /2) ,
         y: this.state.receivedData[e.target.attrs.name].cords.y + (this.state.receivedData[e.target.attrs.name].size.height)
       }
-      // receivedData[e.target.attrs.name].connectedTo.endPos = {
-      //   x: e.evt.layerX,
-      //   y: e.evt.layerY
-      // }
+      receivedData[e.target.attrs.name].connectedTo.endPos = {
+        x: e.evt.layerX,
+        y: e.evt.layerY
+      }
     }
     this.setState({
       receivedData: receivedData
     })
-    // this.drawConnection()
+    this.drawConnection()
   }
   // Set Lines end position
   setLinesEndPos = (e) => {
@@ -111,7 +111,7 @@ class FlowBuilderComponent extends Component {
         x: e.evt.layerX,
         y: e.evt.layerY
       }
-      // this.drawConnection()
+      this.drawConnection()
     }
   }
 
@@ -119,13 +119,17 @@ class FlowBuilderComponent extends Component {
   drawConnection= () => {
     let connections = [];
       for (let obj in this.state.receivedData){
-        console.log(obj)
-         connections.push(<Arrow key = {obj + this.state.elementsCount + "line"}
+         connections.push(<Arrow
+         name = {obj  + "line"}
+         key = {obj + "line"}
          points = {[this.state.receivedData[obj].connectedTo.startPos.x,
                     this.state.receivedData[obj].connectedTo.startPos.y,
                     this.state.receivedData[obj].connectedTo.endPos.x,
                     this.state.receivedData[obj].connectedTo.endPos.y
                   ]}
+         onClick = {(e) => {
+           console.log(e.target.attrs.name)
+         }}
          stroke = "#999999"
          fill = "#999999"
          strokeWidth = {1.5}
@@ -136,7 +140,6 @@ class FlowBuilderComponent extends Component {
       this.setState({
         connections: connections
       })
-      console.log(this.state.connections)
     }
 
     activateDraggability = (e) => {
@@ -253,7 +256,7 @@ class FlowBuilderComponent extends Component {
         x: e.evt.layerX,
         y: e.evt.layerY
       }
-      // this.drawConnection();
+      this.drawConnection();
       this.setState({
         receivedData: receivedData
       })
