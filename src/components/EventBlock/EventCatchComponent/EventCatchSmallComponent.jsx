@@ -40,6 +40,7 @@ class EventCatchSmallComponent extends Component {
                 y = {this.props.y || 10}
                 draggable = {this.props.isDraggable}
                 onDragEnd = { this.props.onDragEnd}
+              
                 // onMouseUp = {this.props.onMouseUp}
                 // onMouseDown ={this.props.onMouseDown}
             >

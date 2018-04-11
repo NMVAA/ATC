@@ -22,6 +22,7 @@ class FlowBuilderComponent extends Component {
     }
     this.isLineDrawing = false;
     this.linesStartElement =  "";
+    this.otherCordsforCollisionFunc = {}
   }
 
   // Allow drop draggable object to this element 
@@ -59,13 +60,24 @@ class FlowBuilderComponent extends Component {
     let {x,y} = e.target.getClientRect();
     let {width,height} = e.target.getClientRect();
     let receivedData = this.state.receivedData;
-    receivedData[e.target.attrs.name].cords = { x: x, y: y };
+    let name = e.target.attrs.name;
+    if (this.otherCordsforCollisionFunc){
+      receivedData[name].cords = {
+        x: this.otherCordsforCollisionFunc.x > x ?
+           this.otherCordsforCollisionFunc.x - width:
+           this.otherCordsforCollisionFunc.x + width + width/10,
+        y: y };
+      this.otherCordsforCollisionFunc = {};
+    }
+    else {
+      receivedData[e.target.attrs.name].cords = { x: x, y: y };
+    }
     receivedData[e.target.attrs.name].size = { width: width, height: height };
     this.setState({
       receivedData: receivedData
     })
+
     this.createCanvasElements();
-  
   }
   // Set lines start position
   setLinesStartPos = (e) => {
@@ -193,6 +205,39 @@ class FlowBuilderComponent extends Component {
       })
     }
   }
+  //
+
+  dragAndDropCollisionDetection =(e) => {
+    let target  = e.target;
+    let targetRect = e.target.getClientRect();
+    let layerChildren = e.target.parent.children
+    layerChildren.forEach( (group) =>  {
+        // do not check intersection with itself
+        if (group === target) {
+            return;
+        }
+        if (this.haveIntersection(group.getClientRect(), targetRect)) {
+            console.log("Kolision")
+            let receivedData = this.state.receivedData
+            this.otherCordsforCollisionFunc = group.getClientRect()
+            console.log(this.otherCordsforCollisionFunc);
+        } 
+        else {
+          this.otherCordsforCollisionFunc = null;
+          console.log(this.otherCordsforCollisionFunc);
+        }
+        
+    });
+    
+  }
+  haveIntersection = (r1, r2) => {
+  return !(
+    r2.x > r1.x + r1.width ||
+          r2.x + r2.width < r1.x ||
+          r2.y > r1.y + r1.height ||
+          r2.y + r2.height < r1.y
+      );
+  }
   // Resizing Canvas to the container size
   resizeCanvas = () => {
     let con = document.querySelector(".flowBuilderComponent");
@@ -226,6 +271,7 @@ class FlowBuilderComponent extends Component {
         console.log("key")
       }}>
         <CanvasComponent
+          dragAndDropCollisionDetection = {this.dragAndDropCollisionDetection}
           scaleStage ={this.state.scaleStage}
           stageZoom = {this.state.stageZoom}
           onMouseUp = {this.setLinesEndPos}
