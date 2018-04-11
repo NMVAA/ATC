@@ -5,10 +5,10 @@ import TalkImage from "../../../img/talk.png"
 import Telegram from "../../../img/telegram.png"
 import Facebook from "../../../img/facebook.png"
 import Dices from "../../../img/dices.png"
+import Ear from "../../../img/ear.png"
 
 
-
-class TextBoxSmallComponent extends Component {
+class TextBoxSmallComponentOLD extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -18,7 +18,9 @@ I'm VacationBot and I'll help you find your perfect vacation`,
             imageTitle: null,
             imagefaceB: null,
             imageTeleG: null,
-            imageDices: null
+            imageDices: null,
+            imageListener: null,
+            imageEar: null
         };
     }
     componentDidMount(){
@@ -51,6 +53,13 @@ I'm VacationBot and I'll help you find your perfect vacation`,
             imageDices: imageDices
           });
         };
+        const imageEar = new window.Image();
+        imageEar.src =  Ear;
+        imageEar.onload = () => {
+          this.setState({
+            imageEar: imageEar
+          });
+        };
     }
     render(){
     return (
@@ -72,7 +81,7 @@ I'm VacationBot and I'll help you find your perfect vacation`,
             x = {0}
             y = {0}
             width = {600/this.props.scale}
-            height = {600/this.props.scale}
+            height = {920/this.props.scale}
             fill = {"#D4EAFF"}
             stroke = {"#999999"}
             strokeWidth = {1.5} 
@@ -128,13 +137,6 @@ I'm VacationBot and I'll help you find your perfect vacation`,
             width = {500/this.props.scale}
             fontSize = {36/this.props.scale}
             />
-            <Image image={this.state.imageDices}
-             name = {this.props.id}
-             x = {470/this.props.scale}
-             y = {255/this.props.scale}
-             width = {59/this.props.scale}
-             height = {46/this.props.scale}
-             />
          </Label>
          <Label name = {this.props.id}  className = {"talkBlock-getStarted"}  x = {30/this.props.scale} y = {450/this.props.scale}>
             <Rect
@@ -200,20 +202,106 @@ I'm VacationBot and I'll help you find your perfect vacation`,
                     cornerRadius = {2}
                     />
                 </Label>
-                <Circle className = {"talkBlock-getStarted-cntnCircle"}
-                name = {this.props.id}
-                onMouseDown={this.props.onMouseDown}
-                x ={540/this.props.scale}
-                y = {115/this.props.scale /2}
-                radius = {15/this.props.scale}
-                fill = {"#f15a24"}
-                stroke = {"#999999"}
-                strokeWidth = {1.5} 
-                />
+        <Circle className = {"talkBlock-getStarted-cntnCircle"}
+        name = {this.props.id}
+        onMouseDown={this.props.onMouseDown}
+        x ={540/this.props.scale}
+        y = {115/this.props.scale /2}
+        radius = {15/this.props.scale}
+        fill = {"#f15a24"}
+        stroke = {"#999999"}
+        strokeWidth = {1.5} 
+        />
+        </Label>
+        <Label name = {this.props.id} className = {"talkBlock-quickReplys"} x = {30/this.props.scale} y = {632/this.props.scale} >
+        <Label name = {this.props.id} className = {"talkBlock-quickReply-element"} x = {0} y = {0} >
+            <Rect
+            name = {this.props.id}
+            width = {540/this.props.scale}
+            height = {84/this.props.scale}
+            fill = {"white"}
+            stroke = {"#999999"}
+            strokeWidth = {1.5} 
+            cornerRadius = {20}
+            />
+            <Text x = {160/this.props.scale} y = {22/this.props.scale}
+            name = {this.props.id}
+            text = {"Unsubscribe"}
+            width = {230/this.props.scale}
+            fontSize = {40/this.props.scale}
+            />
+            <Circle className = {"talkBlock-quickReply-element-cntnCircle"}
+            name = {this.props.id}
+            onMouseDown={this.props.onMouseDown}
+            x = {540/this.props.scale}
+            y = {84/this.props.scale / 2}
+            radius = {15/this.props.scale}
+            fill = {"#8cc63f"}
+            stroke = {"#999999"}
+            strokeWidth = {1.5} 
+            />
+            </Label>
+            <Label name = {this.props.id} className = {"talkBlock-quickReply-element"} x = {0} y = {94/this.props.scale} >
+            <Rect
+            name = {this.props.id}
+            width = {540/this.props.scale}
+            height = {84/this.props.scale}
+            fill = {"white"}
+            stroke = {"#999999"}
+            strokeWidth = {1.5} 
+            cornerRadius = {20}
+            />
+            <Text x = {160/this.props.scale} y = {22/this.props.scale}
+            name = {this.props.id}
+            text = {"Yes, please"}
+            width = {230/this.props.scale}
+            fontSize = {40/this.props.scale}
+            />
+            <Circle className = {"talkBlock-quickReply-element-cntnCircle"}
+            name = {this.props.id}
+            onMouseDown={this.props.onMouseDown}
+            x = {540/this.props.scale}
+            y = {84/this.props.scale /2}
+            radius = {15/this.props.scale}
+            fill = {"#8cc63f"}
+            stroke = {"#999999"}
+            strokeWidth = {1.5} 
+            />
+            </Label>
+            </Label>
+            <Label name = {this.props.id} className = {"talkBlock-listener"} x = {0} y = {920/this.props.scale - 74/this.props.scale}>
+             <Rect
+             name = {this.props.id}
+             x = {0}
+             y = {0}
+             width = {600/this.props.scale}
+             height = {74/this.props.scale}
+             fill = {"white"}
+             stroke = {"#999999"}
+             strokeWidth = {1.5}
+             cornerRadius = {5}
+             />
+             <Text x = {0} y = {20/this.props.scale}
+             name = {this.props.id}
+             align = {"center"}
+             text = {"LISTEN"}
+             width = {600/this.props.scale}
+             fontSize = {40/this.props.scale}
+             />
+             <Circle className = {"talkBlock-quickReply-element-cntnCircle"}
+             name = {this.props.id}
+             onMouseDown={this.props.onMouseDown}
+             x = {600/this.props.scale / 2}
+             y = {74/this.props.scale}
+             radius = {15/this.props.scale}
+             fill = {"#fcee21"}
+             stroke = {"#999999"}
+             strokeWidth = {1.5} 
+             />
             </Label>
         </Label>
     );  
 }
   }   
 
-  export default  TextBoxSmallComponent
+  export default  TextBoxSmallComponentOLD
