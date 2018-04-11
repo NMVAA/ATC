@@ -101,7 +101,6 @@ class FlowBuilderComponent extends Component {
       receivedData: receivedData
     })
     // this.drawConnection()
-    console.log(this.state.receivedData[e.target.attrs.name])
   }
   // Set Lines end position
   setLinesEndPos = (e) => {
@@ -114,8 +113,6 @@ class FlowBuilderComponent extends Component {
       }
       // this.drawConnection()
     }
-
-
   }
 
   //Draw conections
@@ -222,7 +219,7 @@ class FlowBuilderComponent extends Component {
         } 
         else {
           this.otherCordsforCollisionFunc = null;
-          console.log(this.otherCordsforCollisionFunc);
+  
         }
         
     });
@@ -251,7 +248,6 @@ class FlowBuilderComponent extends Component {
   }
   drawLine = (e) => {
     if (this.isLineDrawing){
-      console.log(e.evt.layerX, e.evt.layerY);
       let receivedData = this.state.receivedData;
       receivedData[this.linesStartElement].connectedTo.endPos = {
         x: e.evt.layerX,
