@@ -22,7 +22,7 @@ class FlowBuilderComponent extends Component {
     }
     this.isLineDrawing = false;
     this.linesStartElement =  "";
-    this.otherCordsforCollisionFunc = {}
+    this.otherCordsforCollisionFunc = null
   }
 
   // Allow drop draggable object to this element 
@@ -61,6 +61,8 @@ class FlowBuilderComponent extends Component {
     let {width,height} = e.target.getClientRect();
     let receivedData = this.state.receivedData;
     let name = e.target.attrs.name;
+    receivedData[name].cords = { x: x, y: y };
+    receivedData[name].size = { width: width, height: height };
     if (this.otherCordsforCollisionFunc){
       receivedData[name].cords = {
         x: this.otherCordsforCollisionFunc.x > x ?
@@ -69,10 +71,7 @@ class FlowBuilderComponent extends Component {
         y: y };
       this.otherCordsforCollisionFunc = {};
     }
-    else {
-      receivedData[e.target.attrs.name].cords = { x: x, y: y };
-    }
-    receivedData[e.target.attrs.name].size = { width: width, height: height };
+
     this.setState({
       receivedData: receivedData
     })
@@ -107,7 +106,6 @@ class FlowBuilderComponent extends Component {
   // Set Lines end position
   setLinesEndPos = (e) => {
     let receivedData = this.state.receivedData;
-    console.log(e.evt.layerY)
     this.isLineDrawing = false;
     if (e.target.nodeType === "stage"){
       receivedData[this.linesStartElement].connectedTo.endPos = {
