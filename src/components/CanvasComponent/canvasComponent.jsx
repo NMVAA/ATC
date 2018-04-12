@@ -12,12 +12,20 @@ const CanvasComponent = (props) => {
     let elems = props.createdElements.map(elem => elem)
     return [
         <Stage 
+        x = {-props.canvasOffScreen}
+        y = {-props.canvasOffScreen}
+        stroke = {"#999999"}
+            strokeWidth = {1.5} 
+        onMouseDown = {(e) => {
+            console.log(e.target.getClientRect())
+            console.log(e.evt.layerX);
+            console.log(e.evt.layerY);
+        }}
         scale = {{ x: props.scaleStage, y: props.scaleStage }}
         onMouseUp = {props.onMouseUp}
         onWheel = {props.canvasZoom}
         onMouseMove = {props.drawLine} 
         width={props.width} height={props.height} >
-        
         <Layer
         onDragMove = {props.dragAndDropCollisionDetection}
         >
