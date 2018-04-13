@@ -19,7 +19,8 @@ class FlowBuilderComponent extends Component {
       isDraggable: true,
       scale: 2.5 || 0.4,
       scaleStage: 1,
-      canvasOffScreen: 0
+      canvasOffScreen: 0,
+      translate: {x: 0, y:0}
     }
     this.isLineDrawing = false;
     this.linesStartElement =  "";
@@ -98,6 +99,7 @@ class FlowBuilderComponent extends Component {
   //   }
   //   // this.createCanvasElements()
   // }
+  
   // Set lines start position
   setLinesStartPos = (e) => {
     this.linesStartElement = e.target.attrs.name
@@ -207,16 +209,16 @@ class FlowBuilderComponent extends Component {
     // console.log(e.evt.clientX/ e.target.scale().x - ((e.target.x() ) / e.target.scale().x))
     // stageX: e.evt.clientX/ e.target.scale().x - ((e.target.x() ) / e.target.scale().x),
     // stageY: e.evt.clientY/ e.target.scale().y - ((e.target.y() ) / e.target.scale().y)
-    if (e.evt.altKey && this.state.scaleStage > 0.4){
+    if (e.evt.altKey && this.state.scaleStage > 0.2){
       let receivedData = this.state.receivedData;
         this.setState({
           scaleStage: this.state.scaleStage + (-e.evt.deltaY/1000),
         })
       this.createCanvasElements()
     } 
-    if (this.state.scaleStage < 0.4) {
+    if (this.state.scaleStage < 0.2) {
       this.setState({
-        scaleStage: 0.41
+        scaleStage: 0.21
       })
     }
     if (this.state.scaleStage > 2.1) {
@@ -228,7 +230,22 @@ class FlowBuilderComponent extends Component {
   }
   //Canvas scroll
   canvasScroll = (e) => {
-    // console.log(e.evt.movementX)
+    // console.log("w")
+    if (e.evt.ctrlKey) {
+      let receivedData = this.state.receivedData;
+      for (let obj in receivedData){
+        receivedData[obj].cords = {
+            x: receivedData[obj].cords.x +  e.evt.movementX,
+            y: receivedData[obj].cords.y + e.evt.movementY
+          }
+        
+      }
+      this.setState({
+        receivedData: receivedData
+      })
+    }
+
+    this.createCanvasElements()
   }
   //
   dragAndDropCollisionDetection =(e) => {
@@ -286,7 +303,7 @@ class FlowBuilderComponent extends Component {
         receivedData: receivedData
       })
     }
-    this.canvasScroll(e);
+    // this.canvasScroll(e);
   }
   render() {
     return (
@@ -294,6 +311,8 @@ class FlowBuilderComponent extends Component {
         console.log("key")
       }}>
         <CanvasComponent
+          translate = {this.state.translate}
+          canvasScroll = {this.canvasScroll}
           canvasOffScreen = {this.state.canvasOffScreen}
           dragAndDropCollisionDetection = {this.dragAndDropCollisionDetection}
           scaleStage ={this.state.scaleStage}
