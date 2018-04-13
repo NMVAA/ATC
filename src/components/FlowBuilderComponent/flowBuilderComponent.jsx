@@ -232,6 +232,7 @@ class FlowBuilderComponent extends Component {
   canvasScroll = (e) => {
     // console.log("w")
     if (e.evt.ctrlKey) {
+      this.setState("")
       let receivedData = this.state.receivedData;
       for (let obj in receivedData){
         receivedData[obj].cords = {
