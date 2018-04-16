@@ -1,0 +1,27 @@
+.switchSideBarComponent {
+    position: absolute;
+    top: 300px;
+    left: 20px;
+    width: 65px;
+    height: 65px;
+    background: #99cc67;
+    border: 1.5px solid #494f55;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.switchimgContent {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    width: 48px;
+    height: 48px;
+}
+.switchiconName {
+    position: absolute;
+    top: 65px;
+    left: 8px;
+    color: #494f55;
+    font-size: 12px;
+}
+

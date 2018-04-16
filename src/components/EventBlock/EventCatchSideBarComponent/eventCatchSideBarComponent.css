@@ -1,8 +1,53 @@
+@font-face {
+    font-family: 'charterblackc';
+    src: url('./../../../fonts/charterblackc.otf') format('otf'), url('./../../../fonts/charterblackc.otf') format('otf');
+}
+
+@font-face {
+    font-family: 'MyriadPro-Bold';
+    src: url('./../../../fonts/MyriadPro-Bold.otf') format('otf'), url('./../../../fonts/MyriadPro-Bold.otf') format('otf');
+}
+
 .eventCatchSideBarComponent {
-    margin: 0 auto;
-    width: 150px;
-    border: 2px solid lightgreen;
+    position: absolute;
+    top: 200px;
+    left: 20px;
+    width: 65px;
+    height: 65px;
+    background: #99cc67;
+    border: 1.5px solid #494f55;
+    border-radius: 20px;
     text-align: center;
-    padding: 5px;
-    margin-bottom: 10px;
+}
+
+.catchimgContent {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    width: 48px;
+    height: 48px;
+}
+
+.iconTxt {
+    position: absolute;
+    left: 14px;
+    top: 1.5px;
+    font-family: charterblackc;
+    color: #494f55;
+    font-size: 21px;
+}
+
+.catchiconName {
+    position: absolute;
+    top: 65px;
+    left: 12px;
+    color: #494f55;
+    font-family: MyriadPro-Bold;
+    font-size: 12px;
+}
+
+img {
+    position: relative;
+    width: 100%;
+    pointer-events: none;
 }

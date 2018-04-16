@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import TalkComponent from "./components/TalkComponent/talkComponent.jsx"
+import TextBoxSideBarIconComponent from "./components/TalkBlockComponents/TextBoxSideBarIconComponent/TextBoxSideBarIconComponent.jsx"
+import ImageBoxSideBarComponent from "./components/TalkBlockComponents/ImageBoxComponent/ImageBoxSideBarComponent/ImageBoxSideBarComponent.jsx"
+import ListenBoxSideBarComponent from "./components/TalkBlockComponents/ListenBoxComponent/ListenBoxSideBarComponent/ListenBoxSideBarComponent.jsx"
 import SideBarComponent from "./components/SideBarComponent/sideBarComponent.jsx"
 import EventCatchSideBarComponent from "./components/EventBlock/EventCatchSideBarComponent/eventCatchSideBarComponent.jsx"
-import ActionComponent from "./components/ActionComponent/actionComponent.jsx"
+import EventSendSideBarComponent from "./components/EventBlock/EventSendComponent/EventSendSideBarComponent/EventSendSideBarComponent.jsx"
+import SwitchSideBarComponent from "./components/SwitchComponents/SwitchSideBarComponent/SwitchSideBarComponent.jsx"
 import FlowBuilderComponent from "./components/FlowBuilderComponent/flowBuilderComponent.jsx"
 
 import "./App.css";
@@ -25,9 +28,12 @@ class App extends Component {
     return (
       <div className="App">
         <SideBarComponent>
+        <TextBoxSideBarIconComponent drag={this.drag}/>
+        <ImageBoxSideBarComponent drag={this.drag}/>
+        <ListenBoxSideBarComponent drag={this.drag}/>
         <EventCatchSideBarComponent drag={this.drag}/>
-        <TalkComponent drag={this.drag}/>
-        <ActionComponent drag={this.drag}/>
+        <EventSendSideBarComponent drag={this.drag}/>
+        <SwitchSideBarComponent drag={this.drag}/>
         </SideBarComponent>
         <FlowBuilderComponent/>
       </div>
