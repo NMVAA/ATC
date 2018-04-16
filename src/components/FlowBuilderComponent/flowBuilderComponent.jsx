@@ -6,6 +6,7 @@ import "./flowBuilderComponent.css";
 import TextBoxSmallComponent from "../TalkBlockComponents/TextBoxComponent/TextBoxSmallComponent.jsx"
 import EventCatchSmallComponent from "../EventBlock/EventCatchComponent/EventCatchSmallComponent.jsx"
 import EventSendSmallComponent from "../EventBlock/EventSendSmallComponent/EventSendSmallComponent.jsx"
+import SwitchSmallComponent from "../SwitchComponents/SwitchSmallComponent/SwitchSmallComponent.jsx"
 
 class FlowBuilderComponent extends Component {
   constructor() {
@@ -212,6 +213,20 @@ class FlowBuilderComponent extends Component {
               y = {this.state.receivedData[obj].cords.y}
               />)
             }
+            if (this.state.receivedData[obj].cardType === "switch"){
+              createdElements.push(<SwitchSmallComponent
+              onDragEnd = {this.onDragEnd}
+              onMouseDown = {this.setLinesStartPos}
+              onMouseUp = {this.setLinesEndPos}
+              isDraggable = {this.state.isDraggable}
+              key = {obj + this.state.elementsCount}
+              id = {obj}
+              scale = {this.state.scale}
+              x = {this.state.receivedData[obj].cords.x} 
+              y = {this.state.receivedData[obj].cords.y}
+              />)
+            }
+            
         }
     this.setState({
       createdElements: createdElements

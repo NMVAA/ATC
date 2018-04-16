@@ -11,7 +11,7 @@ import {
     Label
 } from "react-konva"
 import Konva from "konva"
-import SendEvt from "../../../img/sendEvt.png"
+import Switch from "../../../img/switch.png"
 
 class EventSendSmallComponent extends Component {
     constructor(props) {
@@ -23,7 +23,7 @@ class EventSendSmallComponent extends Component {
 
     componentDidMount() {
         const imageSendEvt = new window.Image();
-        imageSendEvt.src = SendEvt;
+        imageSendEvt.src = Switch;
         imageSendEvt.onload = () => {
             // setState will redraw layer
             // because "image" property is changed
@@ -49,8 +49,8 @@ class EventSendSmallComponent extends Component {
                 x = {0}
                 y = {0}
                 width = {600/this.props.scale}
-                height = {300/this.props.scale}
-                fill = {"#99cc67"}
+                height = {500/this.props.scale}
+                fill = {"#ffef9f"}
                 stroke = {"#999999"}
                 strokeWidth = {1.5}
                 cornerRadius = {5} 
@@ -61,29 +61,67 @@ class EventSendSmallComponent extends Component {
                 image={this.state.imageSendEvt}
                 x = {22/this.props.scale}
                 y = {12/this.props.scale}
-                width = {20/this.props.scale}
+                width = {60/this.props.scale}
                 height = {40/this.props.scale}
                 />
                 <Text
                 name = {this.props.id}
                 x = {114/this.props.scale} 
                 y = {12/this.props.scale}
-                text = {"Send event"}
+                text = {"Check location"}
                 fontSize = {36/this.props.scale}
 
                 />
                 <Text
                 name = {this.props.id}
                 x = {74/this.props.scale} 
-                y = {100/this.props.scale}
+                y = {120/this.props.scale}
                 width = {400/this.props.scale} 
-                text = {"TRIGGER SEQUENCE {$value} = “where are you?”"}
+                text = {"{$location} is defined"}
                 fontSize = {36/this.props.scale}
+                align = "center"
                 />
+                {/* asd */}
                 <Label
-                className = {"eventSendSmallComponent-button"}
+                className = {"SwitchSmallComponent-button"}
+                x = {30/this.props.scale}
+                y = {250/this.props.scale}  >
+                <Rect 
+                name = {this.props.id}
+                width = {540/this.props.scale}
+                height = {110/this.props.scale}
+                fill = {"white"}
+                stroke = {"#999999"}
+                strokeWidth = {1.5}
+                cornerRadius = {5}
+                />
+                <Text
+                name = {this.props.id}
+                x = {215/this.props.scale}
+                y = {30/this.props.scale} 
+                width = {600/this.props.scale} 
+                text = {"TRUE"}
+                fontSize = {44/this.props.scale}
+                
+                />
+                <Circle
+                onMouseUp = {this.props.onMouseUp}
+                onMouseDown ={this.props.onMouseDown}
+                className = {"talkBlock-quickReply-element-cntnCircle"}
+                name = {this.props.id}
+                x = {540/this.props.scale}
+                y = {110/this.props.scale/2}
+                radius = {15/this.props.scale}
+                fill = {"#8cc63f"}
+                stroke = {"#999999"}
+                strokeWidth = {1.5} 
+                />
+                </Label>
+                {/* asd */}
+                <Label
+                className = {"SwitchSmallComponent-button"}
                 x = {0}
-                y = {230/this.props.scale}  >
+                y = {430/this.props.scale}  >
                 <Rect 
                 name = {this.props.id}
                 width = {600/this.props.scale}

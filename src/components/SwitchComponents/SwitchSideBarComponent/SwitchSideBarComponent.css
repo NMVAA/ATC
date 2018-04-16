@@ -4,7 +4,7 @@
     left: 20px;
     width: 65px;
     height: 65px;
-    background: #99cc67;
+    background: #ffef9f;
     border: 1.5px solid #494f55;
     border-radius: 20px;
     text-align: center;
@@ -12,7 +12,7 @@
 
 .switchimgContent {
     position: absolute;
-    top: 7px;
+    top: 14px;
     left: 7px;
     width: 48px;
     height: 48px;
