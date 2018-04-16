@@ -5,6 +5,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import "./flowBuilderComponent.css";
 import TextBoxSmallComponent from "../TalkBlockComponents/TextBoxComponent/TextBoxSmallComponent.jsx"
 import EventCatchSmallComponent from "../EventBlock/EventCatchComponent/EventCatchSmallComponent.jsx"
+import EventSendSmallComponent from "../EventBlock/EventSendSmallComponent/EventSendSmallComponent.jsx"
 
 class FlowBuilderComponent extends Component {
   constructor() {
@@ -187,6 +188,19 @@ class FlowBuilderComponent extends Component {
           //fix first element render positioning
           if (this.state.receivedData[obj].cardType === "catch"){
               createdElements.push(<EventCatchSmallComponent
+              onDragEnd = {this.onDragEnd}
+              onMouseDown = {this.setLinesStartPos}
+              onMouseUp = {this.setLinesEndPos}
+              isDraggable = {this.state.isDraggable}
+              key = {obj + this.state.elementsCount}
+              id = {obj}
+              scale = {this.state.scale}
+              x = {this.state.receivedData[obj].cords.x} 
+              y = {this.state.receivedData[obj].cords.y}
+              />)
+            }
+            if (this.state.receivedData[obj].cardType === "send"){
+              createdElements.push(<EventSendSmallComponent
               onDragEnd = {this.onDragEnd}
               onMouseDown = {this.setLinesStartPos}
               onMouseUp = {this.setLinesEndPos}
