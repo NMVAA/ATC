@@ -122,18 +122,6 @@ class FlowBuilderComponent extends Component {
   // Set lines start position
   setLinesStartPos = (e) => {
     this.disableDraggability(e);
-    // let draggbleNode = e.target;
-    // for (let i = 0; i < 10; i++){
-    //   if(!draggbleNode.attrs.hasOwnProperty("draggable")){
-    //     draggbleNode = draggbleNode.parent;
-    //     console.log(draggbleNode)
-    //   }
-    //   if(draggbleNode.attrs.hasOwnProperty("draggable")){
-    //     draggbleNode.attrs.draggable = "false";
-    //     console.log()
-    //     break;
-    //    }
-    // }
     this.linesStartElement = e.target.attrs.name
     this.isLineDrawing = true
     // this.setState({
