@@ -60,7 +60,7 @@ I'm VacationBot and I'll help you find your perfect vacation`,
           draggable = {this.props.isDraggable}
           onDragEnd = { this.props.onDragEnd}
           onMouseUp = {this.props.onMouseUp}
-          onMouseDown ={this.props.onMouseDown}
+          // onMouseDown ={this.props.onMouseDown}
         > 
         <Rect
         name = {this.props.id}

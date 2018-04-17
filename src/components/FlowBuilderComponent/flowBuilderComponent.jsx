@@ -16,7 +16,7 @@ class FlowBuilderComponent extends Component {
       elementsCount: 0,
       receivedData: {},
       createdElements: [],
-      draggable: true,
+      // draggable: false,
       lineCords: null,
       isDraggable: true,
       scale: 2.5 || 0.4,
@@ -39,7 +39,6 @@ class FlowBuilderComponent extends Component {
   // Making data from dropped file 
   drop = (e) => {
     e.preventDefault();
-    console.log(e)
     this.setState({
       elemestsCount: this.state.elementsCount++
     })
@@ -64,6 +63,7 @@ class FlowBuilderComponent extends Component {
 
   //On drag ends  DO I NEED THIS !?!?!
   onDragEnd = (e) => {
+    if (e.target.attrs.name){
     let {x,y} = e.target.getClientRect();
     let {width,height} = e.target.getClientRect();
     let receivedData = this.state.receivedData;
@@ -85,6 +85,7 @@ class FlowBuilderComponent extends Component {
     // this.canvasExpanding(e)
     this.createCanvasElements();
   }
+}
 
   // Increasing the size of canvas on leaving its borders
   // canvasExpanding = (e) => {
@@ -101,11 +102,43 @@ class FlowBuilderComponent extends Component {
   //   }
   //   // this.createCanvasElements()
   // }
-  
+
+  // disable draggability 
+  disableDraggability = (e) =>  {
+    this.setState({
+      isDraggable: false
+    })
+    console.log(e.target.getClientRect())
+  }
+
+  //Enable draggability 
+  enableDraggability = (e) =>  {
+    // this.setState({
+    //   isDraggable: true
+    // })
+    // console.log(e.target.getClientRect())
+  }
+
   // Set lines start position
   setLinesStartPos = (e) => {
+    this.disableDraggability(e);
+    // let draggbleNode = e.target;
+    // for (let i = 0; i < 10; i++){
+    //   if(!draggbleNode.attrs.hasOwnProperty("draggable")){
+    //     draggbleNode = draggbleNode.parent;
+    //     console.log(draggbleNode)
+    //   }
+    //   if(draggbleNode.attrs.hasOwnProperty("draggable")){
+    //     draggbleNode.attrs.draggable = "false";
+    //     console.log()
+    //     break;
+    //    }
+    // }
     this.linesStartElement = e.target.attrs.name
     this.isLineDrawing = true
+    // this.setState({
+    //   isDraggable: false
+    // })
     this.createCanvasElements();
     let receivedData = this.state.receivedData;
     if (!this.state.receivedData[e.target.attrs.name].size){
@@ -128,6 +161,7 @@ class FlowBuilderComponent extends Component {
   }
   // Set Lines end position
   setLinesEndPos = (e) => {
+    this.enableDraggability(e);
     let receivedData = this.state.receivedData;
     this.isLineDrawing = false;
     if (e.target.nodeType === "stage"){
@@ -135,8 +169,16 @@ class FlowBuilderComponent extends Component {
         x: e.evt.layerX,
         y: e.evt.layerY
       }
-      this.drawConnection()
     }
+    console.log(e.target.attrs.name)
+    // this.onDragEnd(e);
+    if (!this.state.isDraggable){
+      this.setState({
+        isDraggable: true
+      })
+      // this.drawConnection();
+    }
+    // this.enableDraggability(e);
   }
 
   //Draw conections
