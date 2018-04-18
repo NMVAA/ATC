@@ -44,21 +44,52 @@ class FlowBuilderComponent extends Component {
     })
     let sideBarWidth = document.querySelector(".sideBarComponent").offsetWidth;
     let data = e.dataTransfer.getData("objectData");
-    let id = data + this.state.elementsCount;
     let receivedData = this.state.receivedData;
-    receivedData[id] = {
-      cardType: data,
-      cords: {
-        x: e.clientX / this.state.scaleStage + this.state.canvasOffScreen - 700 / 2,
-        y: e.clientY / this.state.scaleStage  + this.state.canvasOffScreen - 20
-      },
-      connectedTo: []
-    };
-    this.setState({
-      receivedData: receivedData
-    })
+    let id = data + Object.keys(receivedData).length;
+    if (data === "catch"){
+      receivedData[id] = {
+        id: id,
+        type: data,
+        cords: {
+          x: e.clientX / this.state.scaleStage + this.state.canvasOffScreen - 700 / 2,
+          y: e.clientY / this.state.scaleStage  + this.state.canvasOffScreen - 20
+        },
+        next: null
+      };
+      this.setState({
+        receivedData: receivedData
+      })
+
+    }
+    if (data === "text"){
+      receivedData[id] = {
+        id: id,
+        type: data,
+        cords: {
+          x: e.clientX / this.state.scaleStage + this.state.canvasOffScreen - 700 / 2,
+          y: e.clientY / this.state.scaleStage  + this.state.canvasOffScreen - 20
+        },
+        wait: "number",
+        buttons: [
+          {
+            text: "no, thanks",
+            next: null
+          },
+          {
+            text: "What are u saying, dog?",
+            next: null
+          }
+        ],
+        next: null
+      };
+      this.setState({
+        receivedData: receivedData
+      })
+
+    }
 
     this.createCanvasElements();
+    console.log(receivedData)
   }
 
   //On drag ends  DO I NEED THIS !?!?!
@@ -124,9 +155,6 @@ class FlowBuilderComponent extends Component {
     this.disableDraggability(e);
     this.linesStartElement = e.target.attrs.name
     this.isLineDrawing = true
-    // this.setState({
-    //   isDraggable: false
-    // })
     this.createCanvasElements();
     let receivedData = this.state.receivedData;
     if (!this.state.receivedData[e.target.attrs.name].size){
@@ -145,7 +173,7 @@ class FlowBuilderComponent extends Component {
     this.setState({
       receivedData: receivedData
     })
-    this.drawConnection()
+    // this.drawConnection()
   }
   // Set Lines end position
   setLinesEndPos = (e) => {
@@ -158,42 +186,45 @@ class FlowBuilderComponent extends Component {
         y: e.evt.layerY
       }
     }
-    console.log(e.target.attrs.name)
-    // this.onDragEnd(e);
     if (!this.state.isDraggable){
       this.setState({
         isDraggable: true
       })
-      // this.drawConnection();
+      this.drawConnection();
     }
-    // this.enableDraggability(e);
   }
 
   //Draw conections
   drawConnection= () => {
-    // let connections = [];
-    //   for (let obj in this.state.receivedData){
-    //      connections.push(<Arrow
-    //      name = {obj  + "line"}
-    //      key = {obj + "line"}
-    //      points = {[this.state.receivedData[obj].connectedTo.startPos.x,
-    //                 this.state.receivedData[obj].connectedTo.startPos.y,
-    //                 this.state.receivedData[obj].connectedTo.endPos.x,
-    //                 this.state.receivedData[obj].connectedTo.endPos.y
-    //               ]}
-    //      onClick = {(e) => {
-    //        console.log(e.target.attrs.name)
-    //      }}
-    //      stroke = "#999999"
-    //      fill = "#999999"
-    //      strokeWidth = {1.5}
-    //      lineCap = 'round'
-    //      lineJoin = 'round'
-    //      />)
-    //     }
-    //   this.setState({
-    //     connections: connections
-    //   })
+    let connections = [];
+      for (let obj in this.state.receivedData){
+  
+        if (this.state.receivedData[obj].connectedTo.length > 0){
+
+        
+         connections.push(<Arrow
+         name = {obj  + "line"}
+         key = {obj + "line"}
+         points = {[this.state.receivedData[obj].connectedTo.startPos.x,
+                    this.state.receivedData[obj].connectedTo.startPos.y,
+                    this.state.receivedData[obj].connectedTo.endPos.x,
+                    this.state.receivedData[obj].connectedTo.endPos.y
+                  ]}
+         onClick = {(e) => {
+           console.log(e.target.attrs.name)
+         }}
+         stroke = "#999999"
+         fill = "#999999"
+         strokeWidth = {1.5}
+         lineCap = 'round'
+         lineJoin = 'round'
+         />)
+        }
+      }
+      this.setState({
+        connections: connections
+      })
+      console.log(this.state.connections)
     }
 
     activateDraggability = (e) => {
@@ -202,7 +233,7 @@ class FlowBuilderComponent extends Component {
   createCanvasElements = () => {
     let createdElements = [];
     for (let obj in this.state.receivedData){
-        if (this.state.receivedData[obj].cardType === "text"){
+        if (this.state.receivedData[obj].type === "text"){
             createdElements.push(<TextBoxSmallComponent
             onDragEnd = {this.onDragEnd}
             onMouseDown = {this.setLinesStartPos}
@@ -217,7 +248,7 @@ class FlowBuilderComponent extends Component {
             )
           }
           //fix first element render positioning
-          if (this.state.receivedData[obj].cardType === "catch"){
+          if (this.state.receivedData[obj].type === "catch"){
               createdElements.push(<EventCatchSmallComponent
               onDragEnd = {this.onDragEnd}
               onMouseDown = {this.setLinesStartPos}
@@ -230,7 +261,7 @@ class FlowBuilderComponent extends Component {
               y = {this.state.receivedData[obj].cords.y}
               />)
             }
-            if (this.state.receivedData[obj].cardType === "send"){
+            if (this.state.receivedData[obj].type === "send"){
               createdElements.push(<EventSendSmallComponent
               onDragEnd = {this.onDragEnd}
               onMouseDown = {this.setLinesStartPos}
@@ -243,7 +274,7 @@ class FlowBuilderComponent extends Component {
               y = {this.state.receivedData[obj].cords.y}
               />)
             }
-            if (this.state.receivedData[obj].cardType === "switch"){
+            if (this.state.receivedData[obj].type === "switch"){
               createdElements.push(<SwitchSmallComponent
               onDragEnd = {this.onDragEnd}
               onMouseDown = {this.setLinesStartPos}
